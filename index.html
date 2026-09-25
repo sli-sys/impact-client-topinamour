@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impact clients Topinamour</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="top-band">
+    <img src="logo-topinamour.png" alt="Topinamour" class="logo" />
+  </div>
+
+  <div class="app">
+    <header>
+      <h1>Impact par client</h1>
+      <p class="subtitle">
+        Importez l’export Pennylane des factures. L’outil calcule l’impact de chaque client
+        avec les mêmes ratios que le calculateur Topinamour, puis génère un certificat au format PDF ou PNG.
+      </p>
+    </header>
+
+    <section class="card">
+      <h2>1. Fichier Excel</h2>
+      <div class="dropzone" id="dropzone">
+        Déposez ici l’export Pennylane (.xlsx) ou cliquez pour le choisir
+        <div class="file-name" id="fileName"></div>
+        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" />
+      </div>
+      <div class="file-error hidden" id="fileError" role="alert"></div>
+      <p class="note">
+        La feuille « Lignes de facture » est utilisée (client, produit, quantité, SIREN).
+        Formats acceptés : .xlsx, .xls ou .csv. Les calculs restent dans le navigateur.
+      </p>
+    </section>
+
+    <section class="card hidden" id="resultsCard">
+      <h2>2. Impact calculé</h2>
+      <div class="toolbar">
+        <div>
+          <label for="clientFilter">Filtrer un client</label>
+          <input id="clientFilter" type="text" placeholder="Nom du tiers" />
+        </div>
+        <div>
+          <label for="dateFrom">Du</label>
+          <input id="dateFrom" type="date" />
+        </div>
+        <div>
+          <label for="dateTo">Au</label>
+          <input id="dateTo" type="date" />
+        </div>
+        <button class="secondary" id="exportBtn" type="button">Exporter le tableau Excel</button>
+        <button class="primary" id="allCertsBtn" type="button">Télécharger tous les certificats PDF</button>
+      </div>
+
+      <div id="kpis" class="kpis" style="margin-top:18px"></div>
+      <div id="unmappedBox" class="unmapped hidden"></div>
+
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>SIREN</th>
+              <th>Détail produits</th>
+              <th>Produits</th>
+              <th>Factures</th>
+              <th>kg sauvés</th>
+              <th>Fruits & légumes</th>
+              <th>Litres d’eau</th>
+              <th>kg CO₂</th>
+              <th>Producteurs</th>
+              <th>Repas</th>
+              <th>Douches</th>
+              <th>km voiture</th>
+              <th>Statut mapping</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="note" id="emptyState">Aucun fichier chargé pour l’instant.</p>
+  </div>
+
+  <div class="cert-overlay hidden" id="certOverlay">
+    <div class="card" id="certCard">
+      <div class="cert-actions">
+        <button class="primary" id="downloadCertPdf" type="button">Télécharger en PDF</button>
+        <button class="secondary" id="downloadCertImage" type="button">Télécharger en image</button>
+        <button class="ghost" id="closeCert" type="button">Fermer</button>
+      </div>
+      <div id="certPreview"></div>
+    </div>
+  </div>
+
+  <div id="printRoot"></div>
+
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
